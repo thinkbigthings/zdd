@@ -1,0 +1,16 @@
+plugins {
+    id 'java'
+}
+
+group 'org.thinkbigthings'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 10
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile 'org.junit.jupiter:junit-jupiter:5.4.1'
+}
