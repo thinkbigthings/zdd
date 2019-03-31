@@ -1,0 +1,36 @@
+
+subprojects {
+
+    apply plugin: 'java' // core plugin provided by gradle
+    
+    group = 'org.thinkbigthings.zdd'
+    version = '1.0-SNAPSHOT'
+
+    sourceCompatibility = 12
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        testImplementation 'org.junit.jupiter:junit-jupiter:5.4.1'
+        testImplementation 'org.mockito:mockito-junit-jupiter:2.27.0'
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+}
+
+
+project(':perf') {
+    dependencies {
+        implementation project(':dto')
+    }
+}
+
+project(':server') {
+    dependencies {
+        implementation project(':dto')
+    }
+}

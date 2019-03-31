@@ -1,0 +1,6 @@
+
+rootProject.name = 'zdd'
+
+include 'perf', 'server', 'dto'
+
+
