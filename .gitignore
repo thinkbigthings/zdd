@@ -4,8 +4,12 @@
 # Log file
 *.log
 
+# gradle
+.gradle/
+
 # intellij files
-.iml
+*.iml
+.idea/
 
 # Package Files #
 *.jar
