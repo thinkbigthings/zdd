@@ -48,7 +48,10 @@ run `gradlew bootRun`, then from the command line:
 
 ## TODO
 
-* JUnit 5 test
+* review and refresh README
+* controller takes a User object to save (marshall from json in message body)
+* introduce security
+
 
 ## Cloud (Heroku)
 
