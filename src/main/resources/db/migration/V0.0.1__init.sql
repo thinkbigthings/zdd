@@ -1,6 +1,0 @@
-
-CREATE TABLE IF NOT EXISTS cars (
-    id INT NOT NULL PRIMARY KEY,
-    license_plate VARCHAR NOT NULL,
-    color VARCHAR NOT NULL
-);

@@ -1,20 +1,115 @@
 package org.thinkbigthings.zdd;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.time.Instant;
+import java.util.HashSet;
+import java.util.UUID;
+
+@Entity
+@Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
 public class User {
 
-    private final long id;
-    private final String name;
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false, insertable = false, nullable = false)
+    private Long id;
 
-    public User(long id, String name) {
-        this.id = id;
-        this.name = name;
+
+    @Column(name = "external_id", updatable = false, insertable = false, nullable = false)
+    private UUID externalId;
+
+    @Column(unique=true)
+    @NotNull
+    @Size(min = 3, message = "must be at least three characters")
+    private String username = "";
+
+    @NotNull
+    @Column(unique=true)
+    @Size(min = 3, message = "must be at least three characters")
+    private String email = "";
+
+    @NotNull
+    @Size(min = 3, message = "must be at least three characters")
+    @Column(name="display_name")
+    private String displayName = "";
+
+    @Basic
+    private boolean enabled = false;
+
+    @Basic
+    @NotNull
+    private Instant registration = Instant.now();
+
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+//    private Set<Role> roles = new HashSet<>();
+
+    protected User() {
+
     }
 
-    public long getId() {
+    public User(String user, String display) {
+        username = user;
+        displayName = display;
+    }
+
+
+    public Long getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public void setId(Long id) {
+        this.id = id;
     }
+
+    public UUID getExternalId() {
+        return externalId;
+    }
+
+    public void setExternalId(UUID externalId) {
+        this.externalId = externalId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public Instant getRegistration() {
+        return registration;
+    }
+
+    public void setRegistration(Instant registration) {
+        this.registration = registration;
+    }
+
 }
