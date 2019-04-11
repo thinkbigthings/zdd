@@ -14,6 +14,7 @@ import static org.mockito.Mockito.when;
 
 public class UserControllerTest {
 
+
     private UserRepository userRepo = Mockito.mock(UserRepository.class);
 
     private UserController controller;
@@ -29,7 +30,12 @@ public class UserControllerTest {
     public void controllerCreatesUser() {
 
         String userName = "newuserhere";
-        User created = controller.createUser(userName);
+        User newUser = new User();
+        newUser.setUsername(userName);
+        newUser.setDisplayName(userName);
+        newUser.setEmail(userName+"@email.com");
+
+        User created = controller.createUser(newUser);
 
         assertEquals(userName, created.getUsername());
     }

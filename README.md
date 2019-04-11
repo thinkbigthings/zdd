@@ -41,20 +41,29 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/common-applicatio
 
 ## Testing
 
-run `gradlew bootRun`, then from the command line:
+Unit test: run `gradlew test`
 
-`curl http://localhost:8080/user`
+Manual test: run `gradlew bootRun`, then from another command line run `curl http://localhost:8080/user`
 
+curl quickguide: https://gist.github.com/subfuzion/08c5d85437d5d4f00e58
 
-## TODO
+post:
+`curl -X POST -H "Content-Type: application/json" -d '{"username":"user1", "displayName":"user1", "email":"us@r.com"}' http://localhost:8080/user`
+or if the json is in a file:
+`curl -X POST -H "Content-Type: application/json" -d @data-file.json http://localhost:8080/user`
 
-* review and refresh README
-* controller takes a User object to save (marshall from json in message body)
-* introduce security
-
-
+    
 ## Cloud (Heroku)
 
 Heroku requires apps to bind a port in 60s or it's considered crashed
 https://devcenter.heroku.com/changelog-items/364
 migrations can eat into that time, there are ways to move that out
+
+
+## TODO
+
+* review and refresh README
+* introduce security
+* make registration process
+
+

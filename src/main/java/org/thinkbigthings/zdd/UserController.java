@@ -1,10 +1,12 @@
 package org.thinkbigthings.zdd;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
 public class UserController {
@@ -16,13 +18,19 @@ public class UserController {
         userRepo = repo;
     }
 
-    @RequestMapping("/user")
-    public User createUser(@RequestParam(value="name", defaultValue="user") String name) {
+    @RequestMapping(value="/user", method=GET, produces=APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Iterable<User> getAllUsers(@RequestParam(value="name", defaultValue="user") String name) {
 
-        long count = userRepo.count();
+        return userRepo.findAll();
+    }
 
-        var user = new User(name, name + count);
-        user.setEmail(name + "@" + name + ".com");
+    @RequestMapping(value="/user", method=POST, produces=APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public User createUser(@RequestBody User newUser) {
+
+        var user = new User(newUser.getUsername(), newUser.getDisplayName());
+        user.setEmail(newUser.getEmail());
 
         return userRepo.save(user);
     }
