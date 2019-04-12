@@ -41,20 +41,26 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/common-applicatio
 
 ## Testing
 
-Unit test: run `gradlew test`
+### Unit test
+ 
+run `gradlew test`
 
-Manual test: run `gradlew bootRun`, then from another command line run `curl http://localhost:8080/user`
+### Manual test
 
-curl quickguide: https://gist.github.com/subfuzion/08c5d85437d5d4f00e58
+run `gradlew bootRun`, then from another command line run `curl http://localhost:8080/user`
+
+run `gradlew cleanRun` to clear the database and run the server in one step
+
+curl quick guide: https://gist.github.com/subfuzion/08c5d85437d5d4f00e58
 
 post:
 `curl -X POST -H "Content-Type: application/json" -d '{"username":"user1", "displayName":"user1", "email":"us@r.com"}' http://localhost:8080/user`
 or if the json is in a file:
 `curl -X POST -H "Content-Type: application/json" -d @data-file.json http://localhost:8080/user`
 
-    
-## Cloud (Heroku)
 
+## Cloud (Heroku)
+ 
 Heroku requires apps to bind a port in 60s or it's considered crashed
 https://devcenter.heroku.com/changelog-items/364
 migrations can eat into that time, there are ways to move that out
@@ -62,6 +68,7 @@ migrations can eat into that time, there are ways to move that out
 
 ## TODO
 
+* create code coverage report (https://docs.gradle.org/current/userguide/jacoco_plugin.html)
 * review and refresh README
 * introduce security
 * make registration process

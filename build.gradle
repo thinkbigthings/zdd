@@ -42,3 +42,8 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+
+task cleanRun(type: GradleBuild) {
+    tasks = ['clean', 'flywayClean', 'flywayMigrate', 'bootRun']
+}
