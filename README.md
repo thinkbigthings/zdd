@@ -45,6 +45,10 @@ https://docs.spring.io/spring-boot/docs/current/reference/html/common-applicatio
  
 run `gradlew test`
 
+Code coverage metrics with Jacoco
+`gradlew test jacocoTestReport`
+Then see output in build/reports/jacoco/html/index.html
+
 ### Manual test
 
 run `gradlew bootRun`, then from another command line run `curl http://localhost:8080/user`
@@ -68,7 +72,6 @@ migrations can eat into that time, there are ways to move that out
 
 ## TODO
 
-* create code coverage report (https://docs.gradle.org/current/userguide/jacoco_plugin.html)
 * review and refresh README
 * introduce security
 * make registration process
