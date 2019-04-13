@@ -37,6 +37,15 @@ We are able to run the migration standalone (auto configured on startup, but abl
 https://flywaydb.org/getstarted/firststeps/gradle
 https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 
+### HTTPS
+
+self-signed keys for dev:
+`keytool -genkeypair -alias app -keyalg RSA -keysize 2048 -storetype PKCS12 -keystore app.dev.p12 -validity 3650`
+
+
+## Running
+
+## Debugging
 
 
 ## Testing
@@ -51,16 +60,16 @@ Then see output in build/reports/jacoco/html/index.html
 
 ### Manual test
 
-run `gradlew bootRun`, then from another command line run `curl http://localhost:8080/user`
+curl quick guide: https://gist.github.com/subfuzion/08c5d85437d5d4f00e58
+
+run `gradlew bootRun`, then from another command line run `curl -k https://localhost:8080/user`
 
 run `gradlew cleanRun` to clear the database and run the server in one step
 
-curl quick guide: https://gist.github.com/subfuzion/08c5d85437d5d4f00e58
-
 post:
-`curl -X POST -H "Content-Type: application/json" -d '{"username":"user1", "displayName":"user1", "email":"us@r.com"}' http://localhost:8080/user`
+`curl -k -X POST -H "Content-Type: application/json" -d '{"username":"user1", "displayName":"user1", "email":"us@r.com"}' https://localhost:8080/user`
 or if the json is in a file:
-`curl -X POST -H "Content-Type: application/json" -d @data-file.json http://localhost:8080/user`
+`curl -k -X POST -H "Content-Type: application/json" -d @data-file.json https://localhost:8080/user`
 
 
 ## Cloud (Heroku)

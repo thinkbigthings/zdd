@@ -1,2 +1,2 @@
 
-CREATE DATABASE app OWNER postgres;
+CREATE DATABASE app OWNER postgres ENCODING 'UTF8';
