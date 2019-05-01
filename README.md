@@ -7,7 +7,7 @@ This is a project to illustrate zero downtime deployments.
 Software that needs to be installed:
 
 * Java 11
-* PostgreSQL 9.6.9
+* PostgreSQL 11
 
 Gradle is run via gradle wrapper.
 
@@ -15,6 +15,19 @@ Gradle is run via gradle wrapper.
 
 Postgres should be installed with a user named "postgres".
 You should be able to access the database with `psql -U postgres` 
+
+Database on docker
+sudo apt install docker.io (maybe don’t install as sudo? All docker commands after this have to be sudo)
+sudo docker pull postgres
+docker run --rm   --name pg-docker -e POSTGRES_PASSWORD=postgres -d -p 5555:5432  postgres
+(from another command line) psql -h localhost -U postgres -d postgres -p 5555
+(see it running) docker container ls
+Stop (might not preserve data) sudo docker container stop pg-docker
+
+Can we create users from command line? Install extensions/etc? Or does that need to be baked in to the docker file and image?
+Creating the database is SQL, and that can be executed by psql. Just can’t be executed in a transaction from flyway
+
+
 
 For the first time setup, with PG installed, run create-db.sql 
 Flyway connects to an existing database in a transaction,
