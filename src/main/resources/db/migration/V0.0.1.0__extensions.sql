@@ -1,6 +1,6 @@
 
 -- Create extensions schema to hold all extensions
-CREATE SCHEMA extensions;
+CREATE SCHEMA IF NOT EXISTS extensions;
 
 ---- make sure everybody can use everything in the extensions schema
 --GRANT USAGE ON SCHEMA extensions TO PUBLIC;
