@@ -27,7 +27,7 @@ jacocoTestReport {
 }
 
 flyway {
-    url = 'jdbc:postgresql://localhost:5432/app'
+    url = 'jdbc:postgresql://localhost:5555/app'
     user = 'postgres'
     password = 'postgres'
 }
