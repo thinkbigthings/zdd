@@ -32,6 +32,7 @@ flyway {
     url = props.getProperty("spring.datasource.url") // 'jdbc:postgresql://localhost:5555/app'
     user = props.getProperty("spring.datasource.username") //'postgres'
     password = props.getProperty("spring.datasource.password") //'postgres'
+    schemas = ['public', 'extensions']
 }
 
 

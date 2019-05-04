@@ -1,5 +1,5 @@
 
-set search_path = public, extensions;
+set search_path TO public, extensions;
 
 CREATE TABLE users (
     id           BIGSERIAL    NOT NULL PRIMARY KEY,
