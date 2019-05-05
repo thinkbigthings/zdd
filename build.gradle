@@ -27,8 +27,11 @@ jacocoTestReport {
 }
 
 flyway {
+    
+    // get properties for server and flyway from the same place 
     def props = new Properties()
     file("application.properties").withInputStream { props.load(it) }
+    
     url = props.getProperty("spring.datasource.url") // 'jdbc:postgresql://localhost:5555/app'
     user = props.getProperty("spring.datasource.username") //'postgres'
     password = props.getProperty("spring.datasource.password") //'postgres'
