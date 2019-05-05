@@ -29,15 +29,14 @@ public class UserControllerTest {
     @Test
     public void controllerCreatesUser() {
 
-        String userName = "newuserhere";
-        User newUser = new User();
-        newUser.setUsername(userName);
-        newUser.setDisplayName(userName);
-        newUser.setEmail(userName+"@email.com");
+        String name = "newuserhere";
+        User newUser = new User(name, name);
+
+        newUser.setEmail(name+"@email.com");
 
         User created = controller.createUser(newUser);
 
-        assertEquals(userName, created.getUsername());
+        assertEquals(name, created.getUsername());
     }
 
 }
