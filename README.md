@@ -6,25 +6,46 @@ This is a project to illustrate zero downtime deployments.
 
 Software that needs to be installed:
 
-* Java 11
-* PostgreSQL 9.6.9
-
-Gradle is run via gradle wrapper.
+* Java 11 (use OpenJDK)
+* PostgreSQL 11 (via docker, see below)
+* Gradle (via gradle wrapper, see below)
 
 ### Database
 
-Postgres should be installed with a user named "postgres".
-You should be able to access the database with `psql -U postgres` 
+#### Setup
 
-For the first time setup, with PG installed, run create-db.sql 
+To make it easy for development, we can use a docker container to run Postgres.
+
+Some postgres-on-docker steps are here: https://hackernoon.com/dont-install-postgres-docker-pull-postgres-bee20e200198
+`sudo apt install docker.io` 
+`sudo docker pull postgres`
+
+docker daemon must run as root, but you can specify that a group other than docker should own the Unix socket with the -G option.
+use different host port in case there are other Postgres instances running
+POSTGRES_PASSWORD is the password for the default admin "postgres" user
+`sudo docker run --rm   --name pg-docker -e POSTGRES_PASSWORD=postgres -d -p 5555:5432 postgres`
+`sudo docker container ls`
+
+After starting the container run create-db.sql 
 Flyway connects to an existing database in a transaction,
 and creating a database is outside a transaction, so db creation should be part of setup.
- 
+`psql -h localhost -p 5555 -U postgres -f db/create-db.sql`
 
-`psql -U postgres -f db/create-db.sql`
+You should be able to access the database with
+`psql -h localhost -U postgres -d app -p 5555`
 
-drop database for real
+drop database if you want (maybe not necessary, docker)
 `psql -U postgres -f db/drop-db.sql`
+
+Stop
+`sudo docker container stop pg-docker`
+
+#### Migrations
+
+We use Flyway: https://flywaydb.org/getstarted/firststeps/gradle
+
+Flyway as run from gradle doesn't use the database connection info in the properties file
+It uses the database connection info in the "flyway" block in build.gradle.
 
 When performing migrations, make sure the uuid extension is available to the schema
 e.g. `set search_path = my_schema, extensions;`
@@ -39,7 +60,6 @@ Can test with PSQL: `select cast (gen_random_uuid() as varchar(36));`
 We run the migration standalone (not on startup of the application)
 So that we have more control over the migration process.
 
-https://flywaydb.org/getstarted/firststeps/gradle
 
 
 ### HTTPS
