@@ -34,23 +34,21 @@ and creating a database is outside a transaction, so db creation should be part 
 You should be able to access the database with
 `psql -h localhost -U postgres -d app -p 5555`
 
-drop database if you want (maybe not necessary, docker)
-`psql -U postgres -f db/drop-db.sql`
-
-Stop
+Stop (doesn't maintain the data)
 `sudo docker container stop pg-docker`
 
 #### Migrations
 
 We use Flyway: https://flywaydb.org/getstarted/firststeps/gradle
 
-Flyway as run from gradle doesn't use the database connection info in the properties file
-It uses the database connection info in the "flyway" block in build.gradle.
+Flyway as run from gradle doesn't by default use the database connection info in the properties file
+It uses the database connection info in the "flyway" block in build.gradle
+But we can load the properties from application.properties so we only have to define them in one place.
 
 When performing migrations, make sure the uuid extension is available to the schema
 e.g. `set search_path = my_schema, extensions;`
 
-Drop all tables: `gradlew flywayClean -i`
+Drop all tables on managed schemas: `gradlew flywayClean -i`
 Run all the migrations: `gradlew flywayMigrate -i`
 Drop and run all migrations: `gradlew flywayClean; gradlew flywayMigrate -i`
 
@@ -70,6 +68,9 @@ To make self-signed keys for dev:
 To update HTTPS related files and properties, see the `server.ssl.*` properties used by Spring Boot
 
 ## Running
+
+If starting with a new run of docker, need to ensure the migrations have been run
+since they don't run automatically on app startup. See migration steps.
 
 Run `gradlew bootRun`, or run `gradlew cleanRun` to clear the database and run the server in one step
 
@@ -98,21 +99,15 @@ post:
 or if the json is in a file:
 `curl -k -X POST -H "Content-Type: application/json" -d @data-file.json https://localhost:8080/user`
 
+Actuator (admin/management endpoints) enpoints are listed at
+`https://localhost:8080/actuator`
+
+For example, try /actuator/health
+
 
 ## Cloud (Heroku)
  
 Heroku requires apps to bind a port in 60s or it's considered crashed
 https://devcenter.heroku.com/changelog-items/364
 migrations can eat into that time, there are ways to move that out
-
-
-## TODO
-
-* review and refresh README (database steps)
-
-* introduce security
-security.require-ssl=true
-
-* make registration process
-
 

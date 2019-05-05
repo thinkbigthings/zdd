@@ -54,6 +54,7 @@ dependencies {
     implementation 'org.postgresql:postgresql:42.2.5'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.1.4.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-web:2.1.4.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator:2.1.4.RELEASE'
     
     testImplementation 'org.junit.jupiter:junit-jupiter:5.4.1'
     testImplementation 'org.mockito:mockito-junit-jupiter:2.27.0'
