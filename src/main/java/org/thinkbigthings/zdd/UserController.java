@@ -33,7 +33,13 @@ public class UserController {
         var user = new User(newUser.getUsername(), newUser.getDisplayName());
         user.setEmail(newUser.getEmail());
 
-        return service.saveNewUser(newUser);
+        var savedUser = service.saveNewUser(newUser);
+
+//        if(savedUser.getExternalId() == null) {
+//            throw new IllegalArgumentException("external id was null");
+//        }
+
+        return savedUser;
     }
 
     @RequestMapping(value="/user/{username}", method=GET, produces=APPLICATION_JSON_VALUE)

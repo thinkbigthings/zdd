@@ -15,7 +15,7 @@ public class User {
     @Column(name = "id", updatable = false, insertable = false, nullable = false)
     private Long id;
 
-    @Column(name = "external_id", updatable = false, insertable = false, nullable = false)
+    @Column(name = "external_id")
     private UUID externalId;
 
     @Column(unique=true)
