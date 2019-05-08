@@ -2,39 +2,41 @@ package org.thinkbigthings.zdd;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class UserControllerTest {
+public class UserServiceTest {
 
 
     private UserRepository userRepo = Mockito.mock(UserRepository.class);
 
-    private UserController controller;
+    private UserService service;
 
     @BeforeEach
     public void setup() {
-        controller = new UserController(userRepo);
+        service = new UserService(userRepo);
 
         when(userRepo.save(any(User.class))).then(returnsFirstArg());
+        when(userRepo.saveAndFlush(any(User.class))).then(returnsFirstArg());
+
+        when(userRepo.createUuid()).thenReturn(UUID.randomUUID());
     }
 
     @Test
-    public void controllerCreatesUser() {
+    public void createUser() {
 
         String name = "newuserhere";
         User newUser = new User(name, name);
 
         newUser.setEmail(name+"@email.com");
 
-        User created = controller.createUser(newUser);
+        User created = service.saveNewUser(newUser);
 
         assertEquals(name, created.getUsername());
     }

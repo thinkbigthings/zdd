@@ -1,12 +1,7 @@
 package org.thinkbigthings.zdd;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.util.stream.Stream;
 
@@ -16,14 +11,12 @@ import java.util.stream.Stream;
 public class UserService {
 
 
-    private UserRepository userRepo;
+    private final UserRepository userRepo;
 
-    @Inject
     public UserService(UserRepository repo) {
         userRepo = repo;
     }
 
-    @Transactional
     public User saveNewUser(User newUser) {
 
         var user = new User(newUser.getUsername(), newUser.getDisplayName());
@@ -42,13 +35,11 @@ public class UserService {
 
     }
 
-    @Transactional
     public Stream<User> getAllUsers() {
 
         return userRepo.findAllAsStream();
     }
 
-    @Transactional
     public User getUser(String username) {
 
         return userRepo.findByUsername(username);

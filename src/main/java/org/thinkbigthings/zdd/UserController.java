@@ -2,7 +2,6 @@ package org.thinkbigthings.zdd;
 
 import org.springframework.web.bind.annotation.*;
 
-import javax.inject.Inject;
 import java.util.stream.Stream;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -12,9 +11,9 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RestController
 public class UserController {
 
-    private UserService service;
+    private final UserService service;
 
-    @Inject
+    // if there's only one constructor, can omit Autowired and Inject
     public UserController(UserService s) {
         service = s;
     }
@@ -33,13 +32,7 @@ public class UserController {
         var user = new User(newUser.getUsername(), newUser.getDisplayName());
         user.setEmail(newUser.getEmail());
 
-        var savedUser = service.saveNewUser(newUser);
-
-//        if(savedUser.getExternalId() == null) {
-//            throw new IllegalArgumentException("external id was null");
-//        }
-
-        return savedUser;
+        return service.saveNewUser(newUser);
     }
 
     @RequestMapping(value="/user/{username}", method=GET, produces=APPLICATION_JSON_VALUE)

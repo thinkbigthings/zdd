@@ -15,6 +15,7 @@ public class User {
     @Column(name = "id", updatable = false, insertable = false, nullable = false)
     private Long id;
 
+    @NotNull
     @Column(name = "external_id")
     private UUID externalId;
 
