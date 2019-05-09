@@ -4,7 +4,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.Instant;
-import java.util.HashSet;
 import java.util.UUID;
 
 @Entity
@@ -16,8 +15,8 @@ public class User {
     @Column(name = "id", updatable = false, insertable = false, nullable = false)
     private Long id;
 
-
-    @Column(name = "external_id", updatable = false, insertable = false, nullable = false)
+    @NotNull
+    @Column(name = "external_id")
     private UUID externalId;
 
     @Column(unique=true)
@@ -46,7 +45,7 @@ public class User {
 //    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 //    private Set<Role> roles = new HashSet<>();
 
-    public User() {
+    protected User() {
 
     }
 
