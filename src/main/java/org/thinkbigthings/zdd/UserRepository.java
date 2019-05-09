@@ -17,7 +17,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
         return StreamSupport.stream(findAll().spliterator(), false);
     }
 
-    @Query(nativeQuery = true, value = "select cast (extensions.gen_random_uuid() as varchar(36))")
+    @Query(nativeQuery = true, value = "select cast (public.gen_random_uuid() as varchar(36))")
     String generateUuidString();
 
     default UUID createUuid() {
