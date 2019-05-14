@@ -1,22 +1,21 @@
 package org.thinkbigthings.zdd;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.MediaType;
+
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionService;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.lang.Thread.sleep;
 
 public class NetworkCaller {
 
@@ -29,7 +28,7 @@ public class NetworkCaller {
         // don't check certificates (so can use self-signed) and don't verify hostname
         SSLContext sc = SSLContext.getInstance("TLSv1.3");
         sc.init(null, new TrustManager[]{new InsecureTrustManager()}, new SecureRandom());
-        System.getProperties().setProperty("jdk.internal.httpclient.disableHostnameVerification", Boolean.TRUE.toString());
+        System.setProperty("jdk.internal.httpclient.disableHostnameVerification", Boolean.TRUE.toString());
 
         client = HttpClient.newBuilder()
                 .sslContext(sc)
@@ -37,55 +36,105 @@ public class NetworkCaller {
 
         String info = "https://localhost:8080/actuator/info";
 
-        String url = "https://localhost:8080/users";
+        String users = "https://localhost:8080/user";
 
-        requestStreaming(info);
 
+        for (long n = 1L; n <= 1_000; n++) {
+            System.out.println("loop " + n);
+            post(users, userSupplier(n));
+            get(info);
+
+            // TODO program hangs after a few hundred calls unless this sleep is here
+            // would like to figure out why
+            try{sleep(10);}catch(InterruptedException e) {e.printStackTrace();}
+        }
 
         System.out.println("Program done.");
         System.exit(0);
     }
 
-    public static void requestStreaming(String url) throws Exception {
+    private static User userSupplier(long number) {
+        String name = "user" + number;
+        User newUser = new User(name);
+        newUser.setRegistration(null);
+        newUser.setEmail(name+"@email.com");
+        return newUser;
+    }
+
+    private static HttpRequest.BodyPublisher toJsonPublisher(Object object) {
+
+        ObjectMapper mapper = new ObjectMapper();
+        String json;
+        try {
+            json = mapper.writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        System.out.println("Creating request body: " + json);
+        return HttpRequest.BodyPublishers.ofString(json);
+    }
+
+    public static void post(String url, User newUser) {
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .POST(toJsonPublisher(newUser))
+                .setHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .build();
+
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            processResponse(response);
+
+        } catch (IOException | InterruptedException e ) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public static void get(String url) throws Exception {
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .GET()
                 .build();
 
-        // TODO make a perf branch with this code in it
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        // TODO call a bunch of times (say, start with 3 threads for 10 seconds)
-        // https://stackoverflow.com/questions/4912228/when-should-i-use-a-completionservice-over-an-executorservice
-
-        // TODO post to create a user, verify success response status
-
-        // TODO retrieve created user by name
-
-
-        client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-                .thenAccept( s -> processResponse(s))
-                .join();
+        processResponse(response);
     }
 
     public static void processResponse(HttpResponse<String> response) {
-        processResponseBody(new ByteArrayInputStream(response.body().getBytes(UTF_8)));
-    }
 
-    public static void processResponseBody(InputStream stream) {
+        System.out.println("process response received: " + response.body());
 
-        try(BufferedReader br = new BufferedReader(new InputStreamReader(stream, UTF_8))) {
-            br.lines().forEach(NetworkCaller::processLine);
+        if(response.statusCode() != 200) {
+            String message = "Return status code was " + response.statusCode();
+            System.out.println(message);
+            throw new RuntimeException(message);
         }
-        catch(Exception e) {
-            e.printStackTrace();
-        }
-        System.out.println("Processing Done!");
+
     }
 
-    public static void processLine(String line) {
-        System.out.print(".");
-    }
+//    public static void processResponse(HttpResponse<String> response) {
+//        processResponseBody(new ByteArrayInputStream(response.body().getBytes(UTF_8)));
+//    }
+//
+//    public static void processResponseBody(InputStream stream) {
+//
+//        try(BufferedReader br = new BufferedReader(new InputStreamReader(stream, UTF_8))) {
+//            br.lines().forEach(NetworkCaller::processLine);
+//        }
+//        catch(Exception e) {
+//            e.printStackTrace();
+//        }
+//        System.out.println("Processing Done!");
+//    }
+//
+//    public static void processLine(String line) {
+//        System.out.println(line);
+//    }
 
     public static class InsecureTrustManager implements X509TrustManager {
 

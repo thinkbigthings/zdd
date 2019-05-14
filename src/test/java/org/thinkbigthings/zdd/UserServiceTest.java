@@ -32,7 +32,7 @@ public class UserServiceTest {
     public void createUser() {
 
         String name = "newuserhere";
-        User newUser = new User(name, name);
+        User newUser = new User(name);
 
         newUser.setEmail(name+"@email.com");
 

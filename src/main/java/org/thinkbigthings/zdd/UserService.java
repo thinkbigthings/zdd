@@ -3,6 +3,7 @@ package org.thinkbigthings.zdd;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.Instant;
 import java.util.stream.Stream;
 
 
@@ -23,6 +24,7 @@ public class UserService {
 
         user.setEmail(newUser.getEmail());
 
+        user.setRegistration(Instant.now());
 
         // Hibernate doesn't update with the object's db-generated uuid when you flush since the object is still cached
         // need to implement refresh yourself with the spring data repo
