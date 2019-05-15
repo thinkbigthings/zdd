@@ -5,8 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.stream.Stream;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
 public class UserController {
@@ -33,6 +32,13 @@ public class UserController {
         user.setEmail(newUser.getEmail());
 
         return service.saveNewUser(newUser);
+    }
+
+    @RequestMapping(value="/user/{username}", method=PUT, produces=APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public User updateUser(@RequestBody User newUser, @PathVariable String username) {
+
+        return service.updateUser(username, newUser);
     }
 
     @RequestMapping(value="/user/{username}", method=GET, produces=APPLICATION_JSON_VALUE)

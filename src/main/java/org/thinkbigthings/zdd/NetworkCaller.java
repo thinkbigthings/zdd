@@ -41,16 +41,37 @@ public class NetworkCaller {
 
         for (long n = 1L; n <= 1_000; n++) {
             System.out.println("loop " + n);
-            post(users, userSupplier(n));
+            User user = userSupplier(n);
+
+            String userUrl = users+"/"+user.getUsername();
+
+            post(users, user);
+            sleepQuietly();
+
+            get(userUrl);
+            sleepQuietly();
+
             get(info);
+            sleepQuietly();
+
+            user.setDisplayName(user.getDisplayName()+"updated");
+            put(userUrl, user);
+            sleepQuietly();
+
+            get(userUrl);
+            sleepQuietly();
 
             // TODO program hangs after a few hundred calls unless this sleep is here
             // would like to figure out why
-            try{sleep(10);}catch(InterruptedException e) {e.printStackTrace();}
+            // actually it hangs now anyway, but rarely I think?
         }
 
         System.out.println("Program done.");
         System.exit(0);
+    }
+
+    private static void sleepQuietly() {
+        try{sleep(10);}catch(InterruptedException e) {e.printStackTrace();}
     }
 
     private static User userSupplier(long number) {
@@ -61,7 +82,7 @@ public class NetworkCaller {
         return newUser;
     }
 
-    private static HttpRequest.BodyPublisher toJsonPublisher(Object object) {
+    private static HttpRequest.BodyPublisher jsonFor(Object object) {
 
         ObjectMapper mapper = new ObjectMapper();
         String json;
@@ -75,11 +96,29 @@ public class NetworkCaller {
         return HttpRequest.BodyPublishers.ofString(json);
     }
 
+    public static void put(String url, User newUser) {
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .PUT(jsonFor(newUser))
+                .setHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .build();
+
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            processResponse(response);
+
+        } catch (IOException | InterruptedException e ) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
     public static void post(String url, User newUser) {
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
-                .POST(toJsonPublisher(newUser))
+                .POST(jsonFor(newUser))
                 .setHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
@@ -116,25 +155,6 @@ public class NetworkCaller {
         }
 
     }
-
-//    public static void processResponse(HttpResponse<String> response) {
-//        processResponseBody(new ByteArrayInputStream(response.body().getBytes(UTF_8)));
-//    }
-//
-//    public static void processResponseBody(InputStream stream) {
-//
-//        try(BufferedReader br = new BufferedReader(new InputStreamReader(stream, UTF_8))) {
-//            br.lines().forEach(NetworkCaller::processLine);
-//        }
-//        catch(Exception e) {
-//            e.printStackTrace();
-//        }
-//        System.out.println("Processing Done!");
-//    }
-//
-//    public static void processLine(String line) {
-//        System.out.println(line);
-//    }
 
     public static class InsecureTrustManager implements X509TrustManager {
 

@@ -18,6 +18,16 @@ public class UserService {
         userRepo = repo;
     }
 
+    public User updateUser(String username, User userData) {
+
+        var user = userRepo.findByUsername(username);
+
+        user.setEmail(userData.getEmail());
+        user.setDisplayName(userData.getDisplayName());
+
+        return userRepo.save(user);
+    }
+
     public User saveNewUser(User newUser) {
 
         var user = new User(newUser.getUsername(), newUser.getDisplayName());
