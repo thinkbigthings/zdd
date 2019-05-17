@@ -14,6 +14,10 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 
 import static java.lang.Thread.sleep;
 
@@ -38,40 +42,35 @@ public class NetworkCaller {
 
         String users = "https://localhost:8080/user";
 
+        String health = "https://localhost:8080/actuator/health";
+        Instant end = Instant.now().plus(Duration.of(60, ChronoUnit.SECONDS));
 
-        for (long n = 1L; n <= 1_000; n++) {
+        Long n = 1L;
+        while(Instant.now().isBefore(end)) {
+
             System.out.println("loop " + n);
             User user = userSupplier(n);
+
+            n++;
 
             String userUrl = users+"/"+user.getUsername();
 
             post(users, user);
-            sleepQuietly();
 
             get(userUrl);
-            sleepQuietly();
-
-            get(info);
-            sleepQuietly();
 
             user.setDisplayName(user.getDisplayName()+"updated");
             put(userUrl, user);
-            sleepQuietly();
 
             get(userUrl);
-            sleepQuietly();
 
-            // TODO program hangs after a few hundred calls unless this sleep is here
-            // would like to figure out why
-            // actually it hangs now anyway, but rarely I think?
+            get(info);
+
+            get(health);
         }
 
         System.out.println("Program done.");
         System.exit(0);
-    }
-
-    private static void sleepQuietly() {
-        try{sleep(10);}catch(InterruptedException e) {e.printStackTrace();}
     }
 
     private static User userSupplier(long number) {
