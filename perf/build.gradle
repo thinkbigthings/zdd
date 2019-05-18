@@ -1,4 +1,10 @@
 
+plugins {
+   id 'application'
+}
+
+// this can be specified on the command line
+mainClassName = "org.thinkbigthings.zdd.perf.Application"
 
 dependencies {
 

@@ -18,7 +18,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
-public class NetworkCaller {
+public class Application {
 
 
     private static HttpClient client;
