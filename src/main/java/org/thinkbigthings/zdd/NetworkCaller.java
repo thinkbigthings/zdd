@@ -7,7 +7,6 @@ import org.springframework.http.MediaType;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -17,9 +16,7 @@ import java.security.cert.X509Certificate;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
-
-import static java.lang.Thread.sleep;
+import java.util.UUID;
 
 public class NetworkCaller {
 
@@ -38,22 +35,17 @@ public class NetworkCaller {
                 .sslContext(sc)
                 .build();
 
-        String info = "https://localhost:8080/actuator/info";
+        URI users = URI.create("https://localhost:8080/user");
+        URI info = URI.create("https://localhost:8080/actuator/info");
+        URI health = URI.create("https://localhost:8080/actuator/health");
 
-        String users = "https://localhost:8080/user";
-
-        String health = "https://localhost:8080/actuator/health";
         Instant end = Instant.now().plus(Duration.of(60, ChronoUnit.SECONDS));
-
         Long n = 1L;
         while(Instant.now().isBefore(end)) {
 
-            System.out.println("loop " + n);
-            User user = userSupplier(n);
-
-            n++;
-
-            String userUrl = users+"/"+user.getUsername();
+            System.out.println("loop " + n++);
+            User user = userSupplier(UUID.randomUUID().toString());
+            URI userUrl = URI.create(users.toString() + "/" + user.getUsername());
 
             post(users, user);
 
@@ -70,18 +62,18 @@ public class NetworkCaller {
         }
 
         System.out.println("Program done.");
-        System.exit(0);
+
     }
 
-    private static User userSupplier(long number) {
-        String name = "user" + number;
+    private static User userSupplier(String suffix) {
+        String name = "user" + suffix;
         User newUser = new User(name);
         newUser.setRegistration(null);
         newUser.setEmail(name+"@email.com");
         return newUser;
     }
 
-    private static HttpRequest.BodyPublisher jsonFor(Object object) {
+    public static HttpRequest.BodyPublisher jsonFor(Object object) {
 
         ObjectMapper mapper = new ObjectMapper();
         String json;
@@ -95,51 +87,41 @@ public class NetworkCaller {
         return HttpRequest.BodyPublishers.ofString(json);
     }
 
-    public static void put(String url, User newUser) {
+    public static void put(URI uri, User newUser) throws Exception {
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
+                .uri(uri)
                 .PUT(jsonFor(newUser))
                 .setHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
-        try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             processResponse(response);
 
-        } catch (IOException | InterruptedException e ) {
-            throw new RuntimeException(e);
-        }
-
     }
 
-    public static void post(String url, User newUser) {
+    public static void post(URI uri, User newUser) throws Exception {
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
+                .uri(uri)
                 .POST(jsonFor(newUser))
                 .setHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
-        try {
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            processResponse(response);
 
-        } catch (IOException | InterruptedException e ) {
-            throw new RuntimeException(e);
-        }
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        processResponse(response);
 
     }
 
-    public static void get(String url) throws Exception {
+    public static void get(URI uri) throws Exception {
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
+                .uri(uri)
                 .GET()
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
         processResponse(response);
     }
 
