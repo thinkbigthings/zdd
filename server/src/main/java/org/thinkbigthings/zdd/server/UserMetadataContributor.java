@@ -1,4 +1,4 @@
-package org.thinkbigthings.zdd;
+package org.thinkbigthings.zdd.server;
 
 import org.springframework.boot.actuate.info.Info;
 import org.springframework.boot.actuate.info.InfoContributor;

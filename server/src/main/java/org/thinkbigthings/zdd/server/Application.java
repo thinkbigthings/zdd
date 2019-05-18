@@ -1,4 +1,4 @@
-package org.thinkbigthings.zdd;
+package org.thinkbigthings.zdd.server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,15 +1,14 @@
-package org.thinkbigthings.zdd;
+package org.thinkbigthings.zdd.server;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.AdditionalAnswers;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.AdditionalAnswers.returnsFirstArg;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 public class UserServiceTest {
 
@@ -22,10 +21,10 @@ public class UserServiceTest {
     public void setup() {
         service = new UserService(userRepo);
 
-        when(userRepo.save(any(User.class))).then(returnsFirstArg());
-        when(userRepo.saveAndFlush(any(User.class))).then(returnsFirstArg());
+        Mockito.when(userRepo.save(ArgumentMatchers.any(User.class))).then(AdditionalAnswers.returnsFirstArg());
+        Mockito.when(userRepo.saveAndFlush(ArgumentMatchers.any(User.class))).then(AdditionalAnswers.returnsFirstArg());
 
-        when(userRepo.createUuid()).thenReturn(UUID.randomUUID());
+        Mockito.when(userRepo.createUuid()).thenReturn(UUID.randomUUID());
     }
 
     @Test

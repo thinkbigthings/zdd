@@ -1,4 +1,4 @@
-package org.thinkbigthings.zdd;
+package org.thinkbigthings.zdd.server;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

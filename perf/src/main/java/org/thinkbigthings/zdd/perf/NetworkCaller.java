@@ -1,4 +1,4 @@
-package org.thinkbigthings.zdd;
+package org.thinkbigthings.zdd.perf;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,14 +44,14 @@ public class NetworkCaller {
         while(Instant.now().isBefore(end)) {
 
             System.out.println("loop " + n++);
-            User user = userSupplier(UUID.randomUUID().toString());
-            URI userUrl = URI.create(users.toString() + "/" + user.getUsername());
+            UserDTO user = userSupplier(UUID.randomUUID().toString());
+            URI userUrl = URI.create(users.toString() + "/" + user.username);
 
             post(users, user);
 
             get(userUrl);
 
-            user.setDisplayName(user.getDisplayName()+"updated");
+            user.displayName = user.displayName+"-updated";
             put(userUrl, user);
 
             get(userUrl);
@@ -65,11 +65,12 @@ public class NetworkCaller {
 
     }
 
-    private static User userSupplier(String suffix) {
+    private static UserDTO userSupplier(String suffix) {
         String name = "user" + suffix;
-        User newUser = new User(name);
-        newUser.setRegistration(null);
-        newUser.setEmail(name+"@email.com");
+        UserDTO newUser = new UserDTO();
+        newUser.username = name;
+        newUser.displayName = name;
+        newUser.email = name+"@email.com";
         return newUser;
     }
 
@@ -87,7 +88,7 @@ public class NetworkCaller {
         return HttpRequest.BodyPublishers.ofString(json);
     }
 
-    public static void put(URI uri, User newUser) throws Exception {
+    public static void put(URI uri, UserDTO newUser) throws Exception {
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(uri)
@@ -100,7 +101,7 @@ public class NetworkCaller {
 
     }
 
-    public static void post(URI uri, User newUser) throws Exception {
+    public static void post(URI uri, UserDTO newUser) throws Exception {
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(uri)
@@ -135,6 +136,13 @@ public class NetworkCaller {
             throw new RuntimeException(message);
         }
 
+    }
+
+    public static class UserDTO {
+        public UUID externalId;
+        public String username = "";
+        public String email = "";
+        public String displayName = "";
     }
 
     public static class InsecureTrustManager implements X509TrustManager {

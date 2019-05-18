@@ -1,70 +1,32 @@
 
-buildscript {
+subprojects {
+
+    apply plugin: 'java'
+    
+    group = 'org.thinkbigthings.zdd'
+    version = '1.0-SNAPSHOT'
+
+    sourceCompatibility = 12
+
+    repositories {
+        mavenCentral()
+    }
+
     dependencies {
-        classpath 'org.postgresql:postgresql:42.2.5'
+        testImplementation 'org.junit.jupiter:junit-jupiter:5.4.1'
+        testImplementation 'org.mockito:mockito-junit-jupiter:2.27.0'
+    }
+
+    test {
+        useJUnitPlatform()
     }
 }
 
-plugins {
-    id 'java'
-    id 'org.springframework.boot' version '2.1.3.RELEASE'
-    id 'org.flywaydb.flyway' version '6.0.0-beta' //'5.2.4'
-    id 'jacoco'
-}
-
-// https://docs.gradle.org/current/userguide/jacoco_plugin.html
-jacoco {
-    toolVersion = "0.8.3"
-//    reportsDir = file("$buildDir/customJacocoReportDir")
-}
-
-jacocoTestReport {
-    reports {
-        xml.enabled false
-        csv.enabled false
-        html.destination file("${buildDir}/reports/jacoco/html")
-    }
-}
-
-flyway {
-    
-    // get properties for server and flyway from the same place 
-    def props = new Properties()
-    file("application.properties").withInputStream { props.load(it) }
-    
-    url = props.getProperty("spring.datasource.url") // 'jdbc:postgresql://localhost:5555/app'
-    user = props.getProperty("spring.datasource.username") //'postgres'
-    password = props.getProperty("spring.datasource.password") //'postgres'
-    schemas = ['public']
-}
-
-
-group 'org.thinkbigthings'
-version '1.0-SNAPSHOT'
-
-sourceCompatibility = 12
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-
-//    implementation 'javax.inject:javax.inject:1'
-    implementation 'org.postgresql:postgresql:42.2.5'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.1.4.RELEASE'
-    implementation 'org.springframework.boot:spring-boot-starter-web:2.1.4.RELEASE'
-    implementation 'org.springframework.boot:spring-boot-starter-actuator:2.1.4.RELEASE'
-    
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.4.1'
-    testImplementation 'org.mockito:mockito-junit-jupiter:2.27.0'
-}
-
-test {
-    useJUnitPlatform()
-}
-
-
-task cleanRun(type: GradleBuild) {
-    tasks = ['clean', 'flywayClean', 'flywayMigrate', 'bootRun']
-}
+// a spring boot project isn't packaged internally like a regular jar
+// so can't be used like a regular dependency
+// best practice is to extract shared dependencies into own artifacts
+//project(':perf') {
+//    dependencies {
+//        implementation project(':server')
+//    }
+//}
