@@ -11,6 +11,9 @@ This is a project to illustrate zero downtime deployments.
 
 There are two sub-projects: server and perf.
 
+The server project is a web server for a normal web application.
+The perf project is a basic load testing application that runs against the server.
+
 
 ### Running with Gradle
 
