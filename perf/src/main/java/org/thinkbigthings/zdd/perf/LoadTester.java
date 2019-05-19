@@ -17,6 +17,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
+import java.util.stream.IntStream;
 
 public class LoadTester {
 
@@ -44,10 +45,6 @@ public class LoadTester {
 
     public void run() throws Exception {
 
-        URI users = URI.create("https://localhost:8080/user");
-        URI info = URI.create("https://localhost:8080/actuator/info");
-        URI health = URI.create("https://localhost:8080/actuator/health");
-
         System.out.println("Running test for " + duration);
 
         Instant end = Instant.now().plus(duration);
@@ -55,9 +52,29 @@ public class LoadTester {
         Long n = 1L;
         while(Instant.now().isBefore(end)) {
 
-            UserDTO user = userSupplier(UUID.randomUUID().toString());
-            URI userUrl = URI.create(users.toString() + "/" + user.username);
+//            // basic single threaded, creates 4.7K users
+//            doCRUD();
+//            n += 1;
 
+            // creates 20K users
+            int count = 10;
+            IntStream.range(0, count).parallel().forEach(i -> doCRUD());
+            n += count;
+        }
+
+        System.out.println("Performed operations for " + n + " users");
+    }
+
+    private void doCRUD() {
+
+        URI users = URI.create("https://localhost:8080/user");
+        URI info = URI.create("https://localhost:8080/actuator/info");
+        URI health = URI.create("https://localhost:8080/actuator/health");
+
+        UserDTO user = userSupplier(UUID.randomUUID().toString());
+        URI userUrl = URI.create(users.toString() + "/" + user.username);
+
+        try {
             post(users, user);
 
             get(userUrl);
@@ -70,10 +87,11 @@ public class LoadTester {
             get(info);
 
             get(health);
-            n++;
+        }
+        catch(Exception e) {
+            throw new RuntimeException(e);
         }
 
-        System.out.println("Performed operations for " + n + " users");
     }
 
     private UserDTO userSupplier(String suffix) {
