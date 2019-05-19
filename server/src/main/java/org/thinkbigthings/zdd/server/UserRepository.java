@@ -1,4 +1,4 @@
-package org.thinkbigthings.zdd;
+package org.thinkbigthings.zdd.server;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

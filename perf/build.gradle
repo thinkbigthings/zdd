@@ -1,0 +1,13 @@
+
+plugins {
+   id 'application'
+}
+
+// this can be specified on the command line
+mainClassName = "org.thinkbigthings.zdd.perf.Application"
+
+dependencies {
+
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.1.4.RELEASE'
+}
+

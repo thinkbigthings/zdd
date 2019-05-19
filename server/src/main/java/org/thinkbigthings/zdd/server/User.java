@@ -1,4 +1,4 @@
-package org.thinkbigthings.zdd;
+package org.thinkbigthings.zdd.server;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -47,6 +47,10 @@ public class User {
 
     protected User() {
 
+    }
+
+    public User(String name) {
+        this(name, name);
     }
 
     public User(String name, String display) {
