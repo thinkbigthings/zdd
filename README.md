@@ -28,9 +28,21 @@ With the server started up, we can run a performance test with
 Each class that has a main() method can be run (right-click -> run) from inside an IDE.
 
 
+## Branch Procedures
+
+Define acceptance criteria so we know what is in scope.
+Create branch locally and push to remote
+
+
 ## Merge Procedures
 
-Always run a full build with test coverage before merging a branch.
+Ensure acceptance criteria are met.
 
+Update README docs as necessary.
+
+Always run a full build with test coverage before merging a branch.
 We can do this from the base folder with
 `gradlew clean build :server:jacocoTestReport` 
+
+Do a squash merge so master contains a single commit per issue
+
