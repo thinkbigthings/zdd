@@ -45,7 +45,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web:2.1.4.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-actuator:2.1.4.RELEASE'
 }
-
+ 
+// clear the database, rebuild, and run with fresh database
 task cleanRun(type: GradleBuild) {
     tasks = ['clean', 'flywayClean', 'flywayMigrate', 'bootRun']
 }
