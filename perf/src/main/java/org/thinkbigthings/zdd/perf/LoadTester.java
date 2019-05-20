@@ -17,13 +17,17 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
-import java.util.stream.IntStream;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 public class LoadTester {
 
 
     private HttpClient client;
     private Duration duration = Duration.of(60, ChronoUnit.SECONDS);
+
+    private URI users = URI.create("https://localhost:8080/user");
+    private URI info = URI.create("https://localhost:8080/actuator/info");
+    private URI health = URI.create("https://localhost:8080/actuator/health");
 
     public LoadTester() {
 
@@ -49,27 +53,31 @@ public class LoadTester {
 
         Instant end = Instant.now().plus(duration);
 
-        Long n = 1L;
+        int poolSize = 10;
+        ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(poolSize);
         while(Instant.now().isBefore(end)) {
-
-//            // basic single threaded, creates 4.7K users
-//            doCRUD();
-//            n += 1;
-
-            // creates 20K users
-            int count = 10;
-            IntStream.range(0, count).parallel().forEach(i -> doCRUD());
-            n += count;
+            while(executor.getQueue().size() < poolSize) {
+                executor.submit(() -> doCRUD());
+            }
+            sleepMillis(10);
         }
+        executor.shutdown();
 
-        System.out.println("Performed operations for " + n + " users");
+        System.out.println("Users summary: " + get(info));
+        System.out.println("6 calls per user");
+    }
+
+
+    private void sleepMillis(int millis) {
+        try {
+            Thread.sleep(millis);
+        }
+        catch(InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void doCRUD() {
-
-        URI users = URI.create("https://localhost:8080/user");
-        URI info = URI.create("https://localhost:8080/actuator/info");
-        URI health = URI.create("https://localhost:8080/actuator/health");
 
         UserDTO user = userSupplier(UUID.randomUUID().toString());
         URI userUrl = URI.create(users.toString() + "/" + user.username);
@@ -127,7 +135,7 @@ public class LoadTester {
         processResponse(response);
     }
 
-    public void get(URI uri) throws Exception {
+    public String get(URI uri) throws Exception {
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(uri)
@@ -136,6 +144,8 @@ public class LoadTester {
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         processResponse(response);
+
+        return response.body();
     }
 
     public HttpRequest.BodyPublisher jsonFor(Object object) {
