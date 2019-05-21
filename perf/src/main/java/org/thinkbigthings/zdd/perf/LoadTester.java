@@ -53,7 +53,7 @@ public class LoadTester {
 
         Instant end = Instant.now().plus(duration);
 
-        int poolSize = 10;
+        int poolSize = 2;
         ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(poolSize);
         while(Instant.now().isBefore(end)) {
             while(executor.getQueue().size() < poolSize) {
