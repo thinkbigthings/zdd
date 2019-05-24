@@ -25,6 +25,7 @@ public class LoadTester {
     private HttpClient client;
     private Duration duration = Duration.of(60, ChronoUnit.SECONDS);
 
+
     private URI users = URI.create("https://localhost:8080/user");
     private URI info = URI.create("https://localhost:8080/actuator/info");
     private URI health = URI.create("https://localhost:8080/actuator/health");
