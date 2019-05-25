@@ -20,10 +20,11 @@ The perf project is a basic load testing application that runs against the serve
 Both can be run with Gradle from the base (current) folder.
 
 For example:
-
 `gradlew :server:bootRun` is equivalent to `gradlew -p server bootRun`
 
-To override the port (so we can run multiple servers at once)
+#### Showing Blue Green Deployment
+
+To override the port so we can run multiple servers at once
 e.g. 
 `gradlew :server:flywayMigrate -i`
 `gradlew :server:bootRun --args='--server.port=9001'`
@@ -32,7 +33,8 @@ e.g.
 
 ### Running from IDE
 
-
+TODO show how to run from IDE
+TODO show how to run in debugger
 
 ## Branch Procedures
 
