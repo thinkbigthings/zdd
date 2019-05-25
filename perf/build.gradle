@@ -1,13 +1,14 @@
 
 plugins {
    id 'application'
+   id 'org.springframework.boot' version '2.1.3.RELEASE'
 }
 
 // this can be specified on the command line
 mainClassName = "org.thinkbigthings.zdd.perf.Application"
 
 dependencies {
-
+    
     implementation 'org.springframework.boot:spring-boot-starter-web:2.1.4.RELEASE'
 }
 

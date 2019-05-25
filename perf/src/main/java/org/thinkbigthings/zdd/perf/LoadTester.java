@@ -3,6 +3,7 @@ package org.thinkbigthings.zdd.perf;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -19,18 +20,26 @@ import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
+@Component
 public class LoadTester {
 
 
     private HttpClient client;
     private Duration duration = Duration.of(60, ChronoUnit.SECONDS);
 
+    private String baseUrl;
 
-    private URI users = URI.create("https://localhost:8080/user");
-    private URI info = URI.create("https://localhost:8080/actuator/info");
-    private URI health = URI.create("https://localhost:8080/actuator/health");
+    private URI users;
+    private URI info;
+    private URI health;
 
-    public LoadTester() {
+    public LoadTester(AppProperties config) {
+
+        baseUrl = "https://" + config.getHost() + ":" + config.getPort();
+
+        users = URI.create(baseUrl + "/user");
+        info = URI.create(baseUrl + "/actuator/info");
+        health = URI.create(baseUrl + "/actuator/health");
 
         try {
             // clients are immutable and thread safe
@@ -50,7 +59,7 @@ public class LoadTester {
 
     public void run() throws Exception {
 
-        System.out.println("Running test for " + duration);
+        System.out.println("Running test for " + duration + " connecting to " + baseUrl);
 
         Instant end = Instant.now().plus(duration);
 
@@ -67,7 +76,6 @@ public class LoadTester {
         System.out.println("Users summary: " + get(info));
         System.out.println("6 calls per user");
     }
-
 
     private void sleepMillis(int millis) {
         try {
@@ -100,7 +108,6 @@ public class LoadTester {
         catch(Exception e) {
             throw new RuntimeException(e);
         }
-
     }
 
     private UserDTO userSupplier(String suffix) {
@@ -170,4 +177,6 @@ public class LoadTester {
             throw new RuntimeException(message);
         }
     }
+
+
 }
