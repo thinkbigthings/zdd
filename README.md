@@ -20,16 +20,21 @@ The perf project is a basic load testing application that runs against the serve
 Both can be run with Gradle from the base (current) folder.
 
 For example:
+`gradlew :server:bootRun` is equivalent to `gradlew -p server bootRun`
 
-`gradlew :server:cleanRun` is equivalent to `gradlew -p server cleanRun`
+#### Showing Blue Green Deployment
 
-With the server started up, we can run a performance test with
-`gradlew -p perf run`
+To override the port so we can run multiple servers at once
+e.g. 
+`gradlew :server:flywayMigrate -i`
+`gradlew :server:bootRun --args='--server.port=9001'`
+`gradlew :perf:bootRun --args='--connect.port=9001'`
+
 
 ### Running from IDE
 
-Each class that has a main() method can be run (right-click -> run) from inside an IDE.
-
+TODO show how to run from IDE
+TODO show how to run in debugger
 
 ## Branch Procedures
 
