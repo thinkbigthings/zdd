@@ -36,6 +36,18 @@ e.g.
 TODO show how to run from IDE
 TODO show how to run in debugger
 
+### Monitoring
+
+[VisualVM](https://visualvm.github.io/) is a handy monitoring tool,
+you can download it and run with Java 11.
+
+To show that a server is under load, open the running application in VisualVM
+and click on the threads tab. Note the threads named something like
+`https-jsee-nio-9000-exec-1` and `https-jsee-nio-9000-exec-2`. These are 
+the request handling threads, if they are green they are running. 
+If they are both solid orange, the thread is parked and the server is not
+actively handling any requests.
+
 ## Branch Procedures
 
 Define acceptance criteria so we know what is in scope.
