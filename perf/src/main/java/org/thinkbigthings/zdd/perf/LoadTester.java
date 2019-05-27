@@ -25,7 +25,7 @@ public class LoadTester {
 
 
     private HttpClient client;
-    private Duration duration = Duration.of(60, ChronoUnit.SECONDS);
+    private Duration duration = Duration.of(1, ChronoUnit.HOURS);
 
     private String baseUrl;
 
@@ -59,7 +59,12 @@ public class LoadTester {
 
     public void run() throws Exception {
 
-        System.out.println("Running test for " + duration + " connecting to " + baseUrl);
+        String hms = String.format("%d:%02d:%02d",
+                duration.toHoursPart(),
+                duration.toMinutesPart(),
+                duration.toSecondsPart());
+
+        System.out.println("Running test for " + hms + " (hh:mm:ss) connecting to " + baseUrl);
 
         Instant end = Instant.now().plus(duration);
 
