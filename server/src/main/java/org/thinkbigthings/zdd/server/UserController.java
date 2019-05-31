@@ -2,6 +2,7 @@ package org.thinkbigthings.zdd.server;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.thinkbigthings.zdd.dto.UserDTO;
 
 import java.util.stream.Stream;
 
@@ -25,12 +26,12 @@ public class UserController {
 
     @RequestMapping(value="/user", method= RequestMethod.POST, produces= MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public User createUser(@RequestBody User newUser) {
+    public User createUser(@RequestBody UserDTO newUser) {
 
-        var user = new User(newUser.getUsername(), newUser.getDisplayName());
-        user.setEmail(newUser.getEmail());
+        var user = new User(newUser.username, newUser.displayName);
+        user.setEmail(newUser.email);
 
-        return service.saveNewUser(newUser);
+        return service.saveNewUser(user);
     }
 
     @RequestMapping(value="/user/{username}", method= RequestMethod.PUT, produces= MediaType.APPLICATION_JSON_VALUE)
