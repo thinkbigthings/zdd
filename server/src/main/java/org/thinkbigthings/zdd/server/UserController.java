@@ -48,6 +48,7 @@ public class UserController {
     public User fromDto(UserDTO userData) {
         var user = new User(userData.username, userData.displayName);
         user.setEmail(userData.email);
+        user.setExternalId(userData.externalId);
         return user;
     }
 
