@@ -1,4 +1,4 @@
-package org.thinkbigthings.zdd.perf;
+package org.thinkbigthings.zdd.dto;
 
 import java.util.UUID;
 

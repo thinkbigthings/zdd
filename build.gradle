@@ -22,11 +22,15 @@ subprojects {
     }
 }
 
-// a spring boot project isn't packaged internally like a regular jar
-// so can't be used like a regular dependency
-// best practice is to extract shared dependencies into own artifacts
-//project(':perf') {
-//    dependencies {
-//        implementation project(':server')
-//    }
-//}
+
+project(':perf') {
+    dependencies {
+        implementation project(':dto')
+    }
+}
+
+project(':server') {
+    dependencies {
+        implementation project(':dto')
+    }
+}
