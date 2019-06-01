@@ -18,7 +18,6 @@ import java.security.SecureRandom;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
@@ -36,6 +35,7 @@ public class LoadTester {
     private URI health;
 
     private SecureRandom random = new SecureRandom();
+    private ObjectMapper mapper = new ObjectMapper();
 
     public LoadTester(AppProperties config) {
 
@@ -169,7 +169,6 @@ public class LoadTester {
 
     public HttpRequest.BodyPublisher jsonFor(Object object) {
 
-        ObjectMapper mapper = new ObjectMapper();
         String json;
         try {
             json = mapper.writeValueAsString(object);
