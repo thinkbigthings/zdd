@@ -28,11 +28,7 @@ public class UserService {
         return userRepo.save(user);
     }
 
-    public User saveNewUser(User newUser) {
-
-        var user = new User(newUser.getUsername(), newUser.getDisplayName());
-
-        user.setEmail(newUser.getEmail());
+    public User saveNewUser(User user) {
 
         user.setRegistration(Instant.now());
 

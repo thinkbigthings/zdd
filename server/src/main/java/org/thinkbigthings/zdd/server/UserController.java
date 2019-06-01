@@ -2,6 +2,7 @@ package org.thinkbigthings.zdd.server;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.thinkbigthings.zdd.dto.UserDTO;
 
 import java.util.stream.Stream;
 
@@ -18,32 +19,45 @@ public class UserController {
 
     @RequestMapping(value="/user", method= RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Stream<User> getAllUsers() {
+    public Stream<UserDTO> getAllUsers() {
 
-        return service.getAllUsers();
+        return service.getAllUsers().map(this::toDto);
     }
 
     @RequestMapping(value="/user", method= RequestMethod.POST, produces= MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public User createUser(@RequestBody User newUser) {
+    public UserDTO createUser(@RequestBody UserDTO newUser) {
 
-        var user = new User(newUser.getUsername(), newUser.getDisplayName());
-        user.setEmail(newUser.getEmail());
-
-        return service.saveNewUser(newUser);
+        return toDto(service.saveNewUser(fromDto(newUser)));
     }
 
     @RequestMapping(value="/user/{username}", method= RequestMethod.PUT, produces= MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public User updateUser(@RequestBody User newUser, @PathVariable String username) {
+    public UserDTO updateUser(@RequestBody UserDTO newUser, @PathVariable String username) {
 
-        return service.updateUser(username, newUser);
+        return toDto(service.updateUser(username, fromDto(newUser)));
     }
 
     @RequestMapping(value="/user/{username}", method= RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public User getUser(@PathVariable String username) {
+    public UserDTO getUser(@PathVariable String username) {
 
-        return service.getUser(username);
+        return toDto(service.getUser(username));
+    }
+
+    public User fromDto(UserDTO userData) {
+        var user = new User(userData.username, userData.displayName);
+        user.setEmail(userData.email);
+        user.setExternalId(userData.externalId);
+        return user;
+    }
+
+    public UserDTO toDto(User user) {
+        UserDTO userData = new UserDTO();
+        userData.displayName = user.getDisplayName();
+        userData.email = user.getEmail();
+        userData.username = user.getUsername();
+        userData.externalId = user.getExternalId();
+        return userData;
     }
 }
