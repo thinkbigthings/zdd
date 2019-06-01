@@ -39,11 +39,15 @@ public class User {
 
     @Basic
     @NotNull
-    private Instant registration = Instant.now();
+    private String age = "0";
 
-//    @ManyToMany(fetch = FetchType.LAZY)
-//    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-//    private Set<Role> roles = new HashSet<>();
+    @Basic
+    @NotNull
+    private String favoriteColor = "NONE";
+
+    @Basic
+    @NotNull
+    private Instant registration = Instant.now();
 
     protected User() {
 
@@ -114,4 +118,19 @@ public class User {
         this.registration = registration;
     }
 
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public String getFavoriteColor() {
+        return favoriteColor;
+    }
+
+    public void setFavoriteColor(String favoriteColor) {
+        this.favoriteColor = favoriteColor;
+    }
 }
