@@ -49,6 +49,8 @@ public class UserController {
         var user = new User(userData.username, userData.displayName);
         user.setEmail(userData.email);
         user.setExternalId(userData.externalId);
+        user.setAge(userData.age);
+        user.setFavoriteColor(userData.favoriteColor);
         return user;
     }
 
@@ -58,6 +60,8 @@ public class UserController {
         userData.email = user.getEmail();
         userData.username = user.getUsername();
         userData.externalId = user.getExternalId();
+        userData.age = user.getAge();
+        userData.favoriteColor = user.getFavoriteColor();
         return userData;
     }
 }

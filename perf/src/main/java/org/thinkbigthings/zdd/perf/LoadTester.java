@@ -18,6 +18,7 @@ import java.security.SecureRandom;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
@@ -34,6 +35,8 @@ public class LoadTester {
     private URI info;
     private URI health;
 
+    private SecureRandom random = new SecureRandom();
+
     public LoadTester(AppProperties config) {
 
         baseUrl = "https://" + config.getHost() + ":" + config.getPort();
@@ -46,7 +49,7 @@ public class LoadTester {
             // clients are immutable and thread safe
             // don't check certificates (so can use self-signed) and don't verify hostname
             SSLContext sc = SSLContext.getInstance("TLSv1.3");
-            sc.init(null, new TrustManager[]{new InsecureTrustManager()}, new SecureRandom());
+            sc.init(null, new TrustManager[]{new InsecureTrustManager()}, random);
             System.setProperty("jdk.internal.httpclient.disableHostnameVerification", Boolean.TRUE.toString());
 
             client = HttpClient.newBuilder()
@@ -122,6 +125,8 @@ public class LoadTester {
         newUser.username = name;
         newUser.displayName = name;
         newUser.email = name+"@email.com";
+        newUser.age = Integer.toString(random.nextInt(100));
+        newUser.favoriteColor = "NONE";
         return newUser;
     }
 

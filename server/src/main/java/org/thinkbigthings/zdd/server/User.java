@@ -39,6 +39,14 @@ public class User {
 
     @Basic
     @NotNull
+    private String age = "0";
+
+    @Basic
+    @NotNull
+    private String favoriteColor = "NONE";
+
+    @Basic
+    @NotNull
     private Instant registration = Instant.now();
 
 //    @ManyToMany(fetch = FetchType.LAZY)
@@ -114,4 +122,19 @@ public class User {
         this.registration = registration;
     }
 
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public String getFavoriteColor() {
+        return favoriteColor;
+    }
+
+    public void setFavoriteColor(String favoriteColor) {
+        this.favoriteColor = favoriteColor;
+    }
 }

@@ -8,5 +8,7 @@ CREATE TABLE users (
     email        VARCHAR      NOT NULL DEFAULT '',
     display_name VARCHAR      NOT NULL DEFAULT '',
     enabled      BOOLEAN      NOT NULL DEFAULT FALSE,
-    registration TIMESTAMPTZ
+    registration TIMESTAMPTZ  NOT NULL DEFAULT now(),
+    age            VARCHAR    NOT NULL DEFAULT '',
+    favorite_color VARCHAR    NOT NULL DEFAULT ''
 );

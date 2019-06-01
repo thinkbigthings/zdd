@@ -24,6 +24,8 @@ public class UserService {
 
         user.setEmail(userData.getEmail());
         user.setDisplayName(userData.getDisplayName());
+        user.setAge(userData.getAge());
+        user.setFavoriteColor(userData.getFavoriteColor());
 
         return userRepo.save(user);
     }

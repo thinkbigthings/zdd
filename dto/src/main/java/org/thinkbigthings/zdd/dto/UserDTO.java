@@ -7,4 +7,6 @@ public class UserDTO {
     public String username = "";
     public String email = "";
     public String displayName = "";
+    public String age = "";
+    public String favoriteColor = "";
 }
