@@ -49,6 +49,10 @@ public class User {
     @NotNull
     private Instant registration = Instant.now();
 
+    @Basic
+    @NotNull
+    private String phoneNumber = "";
+
     protected User() {
 
     }
