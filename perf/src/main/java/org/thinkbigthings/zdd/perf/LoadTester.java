@@ -83,7 +83,6 @@ public class LoadTester {
         executor.shutdown();
 
         System.out.println("Users summary: " + get(info));
-        System.out.println("6 calls per user");
     }
 
     private void sleepMillis(int millis) {
@@ -113,6 +112,8 @@ public class LoadTester {
             get(info);
 
             get(health);
+
+            get(users);
         }
         catch(Exception e) {
             throw new RuntimeException(e);

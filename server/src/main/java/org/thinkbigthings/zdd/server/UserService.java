@@ -1,5 +1,6 @@
 package org.thinkbigthings.zdd.server;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -45,9 +46,9 @@ public class UserService {
 
     }
 
-    public Stream<User> getAllUsers() {
+    public Page<User> getUsers() {
 
-        return userRepo.findAllAsStream();
+        return userRepo.findRecent();
     }
 
     public User getUser(String username) {

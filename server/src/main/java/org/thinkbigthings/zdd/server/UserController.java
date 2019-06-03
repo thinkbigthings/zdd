@@ -19,9 +19,9 @@ public class UserController {
 
     @RequestMapping(value="/user", method= RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Stream<UserDTO> getAllUsers() {
+    public Stream<UserDTO> getUsers() {
 
-        return service.getAllUsers().map(this::toDto);
+        return service.getUsers().get().map(this::toDto);
     }
 
     @RequestMapping(value="/user", method= RequestMethod.POST, produces= MediaType.APPLICATION_JSON_VALUE)
@@ -62,6 +62,7 @@ public class UserController {
         userData.externalId = user.getExternalId();
         userData.age = user.getAge();
         userData.favoriteColor = user.getFavoriteColor();
+        userData.registration = user.getRegistration().toString();
         return userData;
     }
 }

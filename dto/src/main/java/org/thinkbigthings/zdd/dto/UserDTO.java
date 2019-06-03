@@ -9,4 +9,5 @@ public class UserDTO {
     public String displayName = "";
     public String age = "";
     public String favoriteColor = "";
+    public String registration = "";
 }
