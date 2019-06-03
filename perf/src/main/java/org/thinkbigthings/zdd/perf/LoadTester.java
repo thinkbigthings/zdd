@@ -113,6 +113,8 @@ public class LoadTester {
             get(info);
 
             get(health);
+
+            get(users);
         }
         catch(Exception e) {
             throw new RuntimeException(e);
