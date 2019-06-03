@@ -62,6 +62,7 @@ public class UserController {
         userData.externalId = user.getExternalId();
         userData.age = user.getAge();
         userData.favoriteColor = user.getFavoriteColor();
+        userData.registration = user.getRegistration().toString();
         return userData;
     }
 }
