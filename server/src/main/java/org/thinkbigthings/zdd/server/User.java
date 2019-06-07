@@ -47,6 +47,10 @@ public class User {
 
     @Basic
     @NotNull
+    private String phoneNumber = "";
+
+    @Basic
+    @NotNull
     private String height = "0";
 
     @Enumerated(EnumType.STRING)
@@ -112,6 +116,14 @@ public class User {
 
     public void setRegistration(Instant registration) {
         this.registration = registration;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getFavoriteColor() {
