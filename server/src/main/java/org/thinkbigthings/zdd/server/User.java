@@ -49,6 +49,10 @@ public class User {
     @NotNull
     private Instant registration = Instant.now();
 
+    @Basic
+    @NotNull
+    private String phoneNumber = "";
+
     protected User() {
 
     }
@@ -118,6 +122,13 @@ public class User {
         this.registration = registration;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
     public String getAge() {
         return age;
     }

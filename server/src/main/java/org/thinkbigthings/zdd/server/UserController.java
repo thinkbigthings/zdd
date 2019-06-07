@@ -51,6 +51,7 @@ public class UserController {
         user.setExternalId(userData.externalId);
         user.setAge(userData.age);
         user.setFavoriteColor(userData.favoriteColor);
+        user.setPhoneNumber(userData.phoneNumber);
         return user;
     }
 
@@ -63,6 +64,7 @@ public class UserController {
         userData.age = user.getAge();
         userData.favoriteColor = user.getFavoriteColor();
         userData.registration = user.getRegistration().toString();
+        userData.phoneNumber = user.getPhoneNumber();
         return userData;
     }
 }

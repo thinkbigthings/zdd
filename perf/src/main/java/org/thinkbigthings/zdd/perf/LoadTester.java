@@ -18,8 +18,10 @@ import java.security.SecureRandom;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.stream.IntStream;
 
 @Component
 public class LoadTester {
@@ -126,9 +128,32 @@ public class LoadTester {
         newUser.username = name;
         newUser.displayName = name;
         newUser.email = name+"@email.com";
+        newUser.phoneNumber = randomPhoneNumber();
         newUser.age = Integer.toString(random.nextInt(100));
         newUser.favoriteColor = "NONE";
         return newUser;
+    }
+
+    private String randomPhoneNumber() {
+
+        Random random = new Random();
+
+        StringBuffer number = new StringBuffer();
+
+        number.append(random.nextInt(10));
+        number.append(random.nextInt(10));
+        number.append(random.nextInt(10));
+        number.append("-");
+        number.append(random.nextInt(10));
+        number.append(random.nextInt(10));
+        number.append(random.nextInt(10));
+        number.append("-");
+        number.append(random.nextInt(10));
+        number.append(random.nextInt(10));
+        number.append(random.nextInt(10));
+        number.append(random.nextInt(10));
+
+        return number.toString();
     }
 
     public void put(URI uri, UserDTO newUser) throws Exception {
