@@ -141,7 +141,6 @@ public class LoadTester {
 
             user.displayName = user.displayName+"-updated";
             user.phoneNumber = faker.phoneNumber().phoneNumber();
-            user.favoriteColor = faker.color().name();
             user.email = faker.internet().emailAddress();
             user.height = Integer.toString(Integer.parseInt(user.height) + 1);
             put(userUrl, user);
@@ -177,7 +176,6 @@ public class LoadTester {
         newUser.displayName = name;
         newUser.phoneNumber = faker.phoneNumber().phoneNumber();
         newUser.email = faker.internet().emailAddress();
-        newUser.favoriteColor = faker.color().name();
         newUser.height = Integer.toString(150 + random.nextInt(40));
         return newUser;
     }

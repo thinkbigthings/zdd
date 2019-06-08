@@ -39,10 +39,6 @@ public class User {
 
     @Basic
     @NotNull
-    private String favoriteColor = "NONE";
-
-    @Basic
-    @NotNull
     private Instant registration = Instant.now();
 
     @Basic
@@ -124,14 +120,6 @@ public class User {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public String getFavoriteColor() {
-        return favoriteColor;
-    }
-
-    public void setFavoriteColor(String favoriteColor) {
-        this.favoriteColor = favoriteColor;
     }
 
     public String getHeight() {

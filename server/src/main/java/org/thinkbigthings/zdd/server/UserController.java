@@ -48,7 +48,6 @@ public class UserController {
     public User fromDto(UserDTO userData) {
         var user = new User(userData.username, userData.displayName);
         user.setEmail(userData.email);
-        user.setFavoriteColor(userData.favoriteColor);
         user.setPhoneNumber(userData.phoneNumber);
         user.setHeight(userData.height);
         return user;
@@ -59,7 +58,6 @@ public class UserController {
         userData.displayName = user.getDisplayName();
         userData.email = user.getEmail();
         userData.username = user.getUsername();
-        userData.favoriteColor = user.getFavoriteColor();
         userData.registration = user.getRegistration().toString();
         userData.phoneNumber = user.getPhoneNumber();
         userData.height = user.getHeight();
