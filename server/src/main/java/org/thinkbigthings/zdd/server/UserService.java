@@ -33,7 +33,7 @@ public class UserService {
 
     public User saveNewUser(User user) {
 
-        user.setRegistration(Instant.now());
+        user.setRegistrationTime(Instant.now());
         user.setEnabled(true);
 
         return userRepo.save(user);

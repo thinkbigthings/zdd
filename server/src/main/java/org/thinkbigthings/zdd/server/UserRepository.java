@@ -14,7 +14,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User findByUsername(String name);
 
     default Page<User> findRecent() {
-        return findAll(PageRequest.of(0, 5, Sort.by(Sort.Order.desc("registration"))));
+        return findAll(PageRequest.of(0, 5, Sort.by(Sort.Order.desc("registrationTime"))));
     }
 
 }

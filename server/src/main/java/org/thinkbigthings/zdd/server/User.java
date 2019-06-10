@@ -39,7 +39,7 @@ public class User {
 
     @Basic
     @NotNull
-    private Instant registration = Instant.now();
+    private Instant registrationTime;
 
     @Basic
     @NotNull
@@ -106,12 +106,12 @@ public class User {
         this.enabled = enabled;
     }
 
-    public Instant getRegistration() {
-        return registration;
+    public Instant getRegistrationTime() {
+        return registrationTime;
     }
 
-    public void setRegistration(Instant registration) {
-        this.registration = registration;
+    public void setRegistrationTime(Instant registration) {
+        this.registrationTime = registration;
     }
 
     public String getPhoneNumber() {

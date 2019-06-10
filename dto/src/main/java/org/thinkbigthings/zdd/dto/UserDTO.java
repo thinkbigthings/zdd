@@ -5,6 +5,6 @@ public class UserDTO {
     public String email = "";
     public String displayName = "";
     public String phoneNumber = "";
-    public String registration = "";
+    public String registrationTime = "";
     public String height = "";
 }

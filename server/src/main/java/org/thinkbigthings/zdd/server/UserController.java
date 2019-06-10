@@ -58,7 +58,7 @@ public class UserController {
         userData.displayName = user.getDisplayName();
         userData.email = user.getEmail();
         userData.username = user.getUsername();
-        userData.registration = user.getRegistration().toString();
+        userData.registrationTime = user.getRegistrationTime().toString();
         userData.phoneNumber = user.getPhoneNumber();
         userData.height = user.getHeight();
         return userData;
