@@ -142,7 +142,7 @@ public class LoadTester {
             user.displayName = user.displayName+"-updated";
             user.phoneNumber = faker.phoneNumber().phoneNumber();
             user.email = faker.internet().emailAddress();
-            user.height = Integer.toString(Integer.parseInt(user.height) + 1);
+            user.heightCm = user.heightCm + 1;
             put(userUrl, user);
 
             get(userUrl);
@@ -175,8 +175,8 @@ public class LoadTester {
         newUser.username = name;
         newUser.displayName = name;
         newUser.phoneNumber = faker.phoneNumber().phoneNumber();
+        newUser.heightCm = 150 + random.nextInt(40);
         newUser.email = faker.internet().emailAddress();
-        newUser.height = Integer.toString(150 + random.nextInt(40));
         return newUser;
     }
 

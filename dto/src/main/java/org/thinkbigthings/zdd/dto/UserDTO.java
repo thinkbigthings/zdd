@@ -6,5 +6,5 @@ public class UserDTO {
     public String displayName = "";
     public String phoneNumber = "";
     public String registrationTime = "";
-    public String height = "";
+    public int heightCm = 0;
 }

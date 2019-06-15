@@ -47,7 +47,7 @@ public class User {
 
     @Basic
     @NotNull
-    private String height = "0";
+    private int heightCm = 0;
 
     @Enumerated(EnumType.STRING)
     @NotNull
@@ -122,12 +122,12 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getHeight() {
-        return height;
+    public int getHeightCm() {
+        return heightCm;
     }
 
-    public void setHeight(String height) {
-        this.height = height;
+    public void setHeightCm(int height) {
+        this.heightCm = height;
     }
 
     public UserType getTypeName() {

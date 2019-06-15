@@ -26,7 +26,7 @@ public class UserService {
         user.setEmail(userData.getEmail());
         user.setDisplayName(userData.getDisplayName());
         user.setPhoneNumber(userData.getPhoneNumber());
-        user.setHeight(userData.getHeight());
+        user.setHeightCm(userData.getHeightCm());
 
         return userRepo.save(user);
     }

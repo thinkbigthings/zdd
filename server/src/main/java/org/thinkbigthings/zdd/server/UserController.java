@@ -49,7 +49,7 @@ public class UserController {
         var user = new User(userData.username, userData.displayName);
         user.setEmail(userData.email);
         user.setPhoneNumber(userData.phoneNumber);
-        user.setHeight(userData.height);
+        user.setHeightCm(userData.heightCm);
         return user;
     }
 
@@ -60,7 +60,7 @@ public class UserController {
         userData.username = user.getUsername();
         userData.registrationTime = user.getRegistrationTime().toString();
         userData.phoneNumber = user.getPhoneNumber();
-        userData.height = user.getHeight();
+        userData.heightCm = user.getHeightCm();
         return userData;
     }
 }
