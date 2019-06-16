@@ -5,7 +5,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.Instant;
-import java.util.stream.Stream;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -21,12 +22,18 @@ public class UserService {
 
     public User updateUser(String username, User userData) {
 
-        var user = userRepo.findByUsername(username);
+        var user = getUser(username);
 
         user.setEmail(userData.getEmail());
         user.setDisplayName(userData.getDisplayName());
         user.setPhoneNumber(userData.getPhoneNumber());
         user.setHeightCm(userData.getHeightCm());
+
+        user.getAddresses().forEach(a -> a.setUser(null));
+        user.getAddresses().clear();
+
+        user.getAddresses().addAll(userData.getAddresses());
+        user.getAddresses().forEach(a -> a.setUser(user));
 
         return userRepo.save(user);
     }
@@ -48,4 +55,5 @@ public class UserService {
 
         return userRepo.findByUsername(username);
     }
+
 }

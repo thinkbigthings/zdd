@@ -2,8 +2,10 @@ package org.thinkbigthings.zdd.perf;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.javafaker.Address;
 import com.github.javafaker.Faker;
 import org.springframework.stereotype.Component;
+import org.thinkbigthings.zdd.dto.AddressDTO;
 import org.thinkbigthings.zdd.dto.UserDTO;
 
 import javax.net.ssl.SSLContext;
@@ -41,7 +43,7 @@ public class LoadTester {
     private URI info;
     private URI health;
 
-    private SecureRandom random = new SecureRandom();
+    private Random random = new Random();
     private ObjectMapper mapper = new ObjectMapper();
     private Faker faker = new Faker(Locale.US, new Random());
 
@@ -78,7 +80,7 @@ public class LoadTester {
             // clients are immutable and thread safe
             // don't check certificates (so can use self-signed) and don't verify hostname
             SSLContext sc = SSLContext.getInstance("TLSv1.3");
-            sc.init(null, new TrustManager[]{new InsecureTrustManager()}, random);
+            sc.init(null, new TrustManager[]{new InsecureTrustManager()}, new SecureRandom());
             System.setProperty("jdk.internal.httpclient.disableHostnameVerification", Boolean.TRUE.toString());
 
             client = HttpClient.newBuilder()
@@ -143,6 +145,8 @@ public class LoadTester {
             user.phoneNumber = faker.phoneNumber().phoneNumber();
             user.email = faker.internet().emailAddress();
             user.heightCm = user.heightCm + 1;
+            user.addresses.clear();
+            user.addresses.add(randomAddress());
             put(userUrl, user);
 
             get(userUrl);
@@ -177,7 +181,21 @@ public class LoadTester {
         newUser.phoneNumber = faker.phoneNumber().phoneNumber();
         newUser.heightCm = 150 + random.nextInt(40);
         newUser.email = faker.internet().emailAddress();
+        newUser.addresses.add(randomAddress());
         return newUser;
+    }
+
+    private AddressDTO randomAddress() {
+
+        AddressDTO address = new AddressDTO();
+
+        Address randomAddress = faker.address();
+        address.line1 = randomAddress.streetAddress();
+        address.city = randomAddress.city();
+        address.state = randomAddress.state();
+        address.zip = randomAddress.zipCode();
+
+        return address;
     }
 
     public void put(URI uri, UserDTO newUser) throws Exception {

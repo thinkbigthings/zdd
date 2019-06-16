@@ -4,6 +4,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -52,6 +54,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     @NotNull
     private UserType typeName = UserType.REGISTERED;
+
+    @OneToMany(fetch=FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval=true)
+    private Set<Address> addresses = new HashSet<>();
 
     protected User() {
 
@@ -137,4 +142,13 @@ public class User {
     public void setTypeName(UserType typeName) {
         this.typeName = typeName;
     }
+
+    public Set<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(Set<Address> addresses) {
+        this.addresses = addresses;
+    }
+
 }
