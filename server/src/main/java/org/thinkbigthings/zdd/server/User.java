@@ -12,10 +12,6 @@ import java.util.UUID;
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
 public class User {
 
-    public enum UserType {
-        REGISTERED, GUEST
-    }
-
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, insertable = false, nullable = false)
@@ -50,10 +46,6 @@ public class User {
     @Basic
     @NotNull
     private int heightCm = 0;
-
-    @Enumerated(EnumType.STRING)
-    @NotNull
-    private UserType typeName = UserType.REGISTERED;
 
     @OneToMany(fetch=FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval=true)
     private Set<Address> addresses = new HashSet<>();
@@ -133,14 +125,6 @@ public class User {
 
     public void setHeightCm(int height) {
         this.heightCm = height;
-    }
-
-    public UserType getTypeName() {
-        return typeName;
-    }
-
-    public void setTypeName(UserType typeName) {
-        this.typeName = typeName;
     }
 
     public Set<Address> getAddresses() {
